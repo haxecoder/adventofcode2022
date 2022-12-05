@@ -2,10 +2,13 @@ const fs = require("fs");
 
 const puzzlesCount = fs.readdirSync(`${process.cwd()}/puzzles/`).length;
 
-function readData(data) {
+console.log("==== Advent of code 2022 ====");
+
+function readData(data, puzzleId, isTest) {
     if (typeof data === "undefined") {
         return;
     }
+    console.log(`puzzle #${puzzleId}${isTest ? " with test data" : ""}`);
     this.rawData = data;
     this["initData"]();
     this["execute"]();
@@ -33,6 +36,6 @@ for (let i = 1; i < puzzlesCount + 1; i++) {
 
     for (let field in scripts) {
         scripts[field].run = readData;
-        scripts[field].run(data[field]);
+        scripts[field].run(data[field], i, field.includes("test"));
     }
 }
