@@ -1,0 +1,6 @@
+{
+  "name": "adventofcode2022",
+  "scripts": {
+    "run": "node src/app.js"
+  }
+}
