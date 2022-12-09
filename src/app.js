@@ -1,6 +1,6 @@
 const fs = require("fs");
 
-const puzzlesCount = fs.readdirSync(`${process.cwd()}/puzzles/`).length;
+const puzzlesCount = fs.readdirSync(`./puzzles/`).length;
 
 console.log("==== Advent of code 2022 ====");
 
@@ -13,8 +13,8 @@ function readData(data, puzzleId, dataId) {
     this.answer = null;
     this.rawData = data;
 
-    this["initData"]();
-    this["execute"]();
+    this.initData();
+    this.execute();
 
     if (this.answer != null) {
         let testOutput = "";
@@ -44,7 +44,7 @@ for (let i = 1; i < puzzlesCount + 1; i++) {
         let p = `./puzzles/${i}/${it}.data`;
         let data = null;
         if (fs.existsSync(p)) {
-            data = fs.readFileSync(p,"UTF-8");
+            data = fs.readFileSync(p,"utf-8");
         }
         let script = it.includes("first") ? scripts[0] : scripts[1];
         readData.call(script, data, i, it);
