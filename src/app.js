@@ -4,38 +4,49 @@ const puzzlesCount = fs.readdirSync(`${process.cwd()}/puzzles/`).length;
 
 console.log("==== Advent of code 2022 ====");
 
-function readData(data, puzzleId, isTest) {
+function readData(data, puzzleId, dataId) {
     if (typeof data === "undefined") {
         return;
     }
-    console.log(`puzzle #${puzzleId}${isTest ? " with test data" : ""}`);
+    const isTest = dataId.includes("test");
+
+    this.answer = null;
     this.rawData = data;
+
     this["initData"]();
     this["execute"]();
+
+    if (this.answer != null) {
+        let testOutput = "";
+
+        if (isTest) {
+            const outputColor = this.answer === this.testAnswer ? "\x1b[32m" : "\x1b[31m";
+            testOutput = `${outputColor} <<< test \x1b[0m`;
+        }
+
+        console.log(
+            `puzzle #${puzzleId}[${dataId.split('.')[0]} part]`,
+            '\x1b[36m', `${this.answer}`, '\x1b[0m',
+            testOutput
+        );
+    }
 }
 
 for (let i = 1; i < puzzlesCount + 1; i++) {
-    let scripts = {
-        first: require(`./puzzles/${i}/first.js`),
-        second: require(`./puzzles/${i}/second.js`),
-    };
+    let scripts = [
+        require(`./puzzles/${i}/first.js`),
+        require(`./puzzles/${i}/second.js`),
+    ];
 
-    scripts["first.test"] = scripts.first;
-    scripts["second.test"] = scripts.second;
-
-    let data = {};
-
-    let dataFiles = ["first", "second", "first.test", "second.test"];
+    let dataFiles = ["first.test", "first", "second.test", "second"];
 
     for (let it of dataFiles) {
         let p = `./puzzles/${i}/${it}.data`;
+        let data = null;
         if (fs.existsSync(p)) {
-            data[it] = fs.readFileSync(p,"UTF-8");
+            data = fs.readFileSync(p,"UTF-8");
         }
-    }
-
-    for (let field in scripts) {
-        scripts[field].run = readData;
-        scripts[field].run(data[field], i, field.includes("test"));
+        let script = it.includes("first") ? scripts[0] : scripts[1];
+        readData.call(script, data, i, it);
     }
 }

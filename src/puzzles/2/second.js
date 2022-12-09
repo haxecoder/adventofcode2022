@@ -3,6 +3,6 @@ module.exports = {
         this.data = this.rawData;
     },
     execute: function() {
-        console.log(`data = ${this.data}`);
+
     }
 };
