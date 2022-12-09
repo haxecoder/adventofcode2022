@@ -10,7 +10,6 @@ function readData(data, puzzleId, dataId) {
     }
     const isTest = dataId.includes("test");
 
-    this.answer = null;
     this.rawData = data;
 
     this.initData();
