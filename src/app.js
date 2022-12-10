@@ -5,10 +5,6 @@ const puzzlesCount = fs.readdirSync(`./puzzles/`).length;
 console.log("==== Advent of code 2022 ====");
 
 function readData(data, outputHeader, isTest) {
-    if (data === "") {
-        return;
-    }
-
     this.rawData = data;
     this.initData();
     this.execute();
@@ -35,9 +31,9 @@ for (let i = 1; i < puzzlesCount + 1; i++) {
     ].map(it => fs.existsSync(`./src/${it}`) ? require(it) : null);
 
     scripts.forEach((it, j) => {
-        if (!it) return;
+        if (it === null) return;
         input.forEach((data, k) => {
-            if (!data) return;
+            if (data === "") return;
             readData.call(it, data, `puzzle #${i}[part ${j + 1}]`, k === 0);
         })
     });
