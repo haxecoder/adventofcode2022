@@ -5,20 +5,17 @@ const puzzlesCount = fs.readdirSync(`./puzzles/`).length;
 console.log("==== Advent of code 2022 ====");
 
 function readData(data, puzzleId, dataId) {
-    if (typeof data === "undefined") {
+    if (data === (null || "")) {
         return;
     }
-    const isTest = dataId.includes("test");
-
     this.rawData = data;
-
     this.initData();
     this.execute();
 
     if (this.answer != null) {
         let testOutput = "";
 
-        if (isTest) {
+        if (dataId.includes("test")) {
             const outputColor = this.answer === this.testAnswer ? "\x1b[32m" : "\x1b[31m";
             testOutput = `${outputColor} <<< test \x1b[0m`;
         }
