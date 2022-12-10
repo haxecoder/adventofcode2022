@@ -29,20 +29,24 @@ function readData(data, puzzleId, dataId) {
 }
 
 for (let i = 1; i < puzzlesCount + 1; i++) {
-    let scripts = [
-        require(`./puzzles/${i}/first.js`),
-        require(`./puzzles/${i}/second.js`),
+    let puzzlesFiles = [`./puzzles/${i}/first.js`, `./puzzles/${i}/second.js`];
+    let dataFiles = [`./puzzles/${i}/input.test`, `./puzzles/${i}/input.data`];
+
+    let input = [
+        fs.existsSync(dataFiles[0]) ? fs.readFileSync(dataFiles[0],"utf-8") : null,
+        fs.existsSync(dataFiles[1]) ? fs.readFileSync(dataFiles[1],"utf-8") : null
     ];
 
-    let dataFiles = ["first.test", "first", "second.test", "second"];
+    let scripts = [
+        fs.existsSync(`./src/${puzzlesFiles[0]}`) ? require(puzzlesFiles[0]) : null,
+        fs.existsSync(`./src/${puzzlesFiles[1]}`) ? require(puzzlesFiles[1]) : null
+    ];
 
-    for (let it of dataFiles) {
-        let p = `./puzzles/${i}/${it}.data`;
-        let data = null;
-        if (fs.existsSync(p)) {
-            data = fs.readFileSync(p,"utf-8");
-        }
-        let script = it.includes("first") ? scripts[0] : scripts[1];
-        readData.call(script, data, i, it);
-    }
+    scripts.forEach((it) => {
+        if (!it) return;
+        input.forEach((data, j) => {
+            if (!data) return;
+            readData.call(it, data, i, j === 0 ? "first.test" : "first");
+        })
+    });
 }
