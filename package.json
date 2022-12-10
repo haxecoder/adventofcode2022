@@ -1,6 +1,7 @@
 {
   "name": "adventofcode2022",
   "scripts": {
-    "run": "node src/app.js"
+    "run": "node src/app.js",
+    "createPuzzle": "node src/createPuzzle.js"
   }
 }

@@ -1,0 +1,8 @@
+module.exports = {
+    initData: function () {
+
+    },
+    execute: function() {
+
+    }
+};
