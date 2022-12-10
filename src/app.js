@@ -24,18 +24,15 @@ function readData(data, outputHeader, isTest) {
 }
 
 for (let i = 1; i < puzzlesCount + 1; i++) {
-    let puzzlesFiles = [`./puzzles/${i}/first.js`, `./puzzles/${i}/second.js`];
-    let dataFiles = [`./puzzles/${i}/input.test`, `./puzzles/${i}/input.data`];
-
     let input = [
-        fs.existsSync(dataFiles[0]) ? fs.readFileSync(dataFiles[0],"utf-8") : null,
-        fs.existsSync(dataFiles[1]) ? fs.readFileSync(dataFiles[1],"utf-8") : null
-    ];
+        `./puzzles/${i}/input.test`,
+        `./puzzles/${i}/input.data`
+    ].map(it => fs.existsSync(it) ? fs.readFileSync(it,"utf-8") : null);
 
     let scripts = [
-        fs.existsSync(`./src/${puzzlesFiles[0]}`) ? require(puzzlesFiles[0]) : null,
-        fs.existsSync(`./src/${puzzlesFiles[1]}`) ? require(puzzlesFiles[1]) : null
-    ];
+        `./puzzles/${i}/first.js`,
+        `./puzzles/${i}/second.js`
+    ].map(it => fs.existsSync(`./src/${it}`) ? require(it) : null)
 
     scripts.forEach((it, j) => {
         if (!it) return;
