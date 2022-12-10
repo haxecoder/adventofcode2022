@@ -4,27 +4,22 @@ const puzzlesCount = fs.readdirSync(`./puzzles/`).length;
 
 console.log("==== Advent of code 2022 ====");
 
-function readData(data, puzzleId, dataId) {
+function readData(data, outputHeader, isTest) {
     if (data === (null || "")) {
         return;
     }
+
     this.rawData = data;
     this.initData();
     this.execute();
 
     if (this.answer != null) {
-        let testOutput = "";
-
-        if (dataId.includes("test")) {
-            const outputColor = this.answer === this.testAnswer ? "\x1b[32m" : "\x1b[31m";
-            testOutput = `${outputColor} <<< test \x1b[0m`;
-        }
-
-        console.log(
-            `puzzle #${puzzleId}[${dataId.split('.')[0]} part]`,
+        let output = [
+            outputHeader,
             '\x1b[36m', `${this.answer}`, '\x1b[0m',
-            testOutput
-        );
+            isTest ? `${this.answer === this.testAnswer ? "\x1b[32m" : "\x1b[31m"} <<< test \x1b[0m` : ""
+        ];
+        console.log(...output);
     }
 }
 
@@ -42,11 +37,11 @@ for (let i = 1; i < puzzlesCount + 1; i++) {
         fs.existsSync(`./src/${puzzlesFiles[1]}`) ? require(puzzlesFiles[1]) : null
     ];
 
-    scripts.forEach((it) => {
+    scripts.forEach((it, j) => {
         if (!it) return;
-        input.forEach((data, j) => {
+        input.forEach((data, k) => {
             if (!data) return;
-            readData.call(it, data, i, j === 0 ? "first.test" : "first");
+            readData.call(it, data, `puzzle #${i}[part ${j + 1}]`, k === 0);
         })
     });
 }

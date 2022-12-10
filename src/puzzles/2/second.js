@@ -30,12 +30,5 @@ module.exports = {
             }
         };
     },
-    execute: function() {
-        let result = 0;
-        for (let it of this.data) {
-            result += this.rules[it.charAt(2)].value;
-            result += this.rules[it.charAt(2)][it.charAt(0)];
-        }
-        this.answer = result;
-    }
+    execute: require("./first").execute
 };
