@@ -32,7 +32,7 @@ for (let i = 1; i < puzzlesCount + 1; i++) {
     let scripts = [
         `./puzzles/${i}/first.js`,
         `./puzzles/${i}/second.js`
-    ].map(it => fs.existsSync(`./src/${it}`) ? require(it) : null)
+    ].map(it => fs.existsSync(`./src/${it}`) ? require(it) : null);
 
     scripts.forEach((it, j) => {
         if (!it) return;
